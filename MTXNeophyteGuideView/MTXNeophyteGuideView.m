@@ -189,7 +189,7 @@
 
 #pragma mark - Dealloc
 - (void)dealloc {
-    NSLog(@"====Dealloc====");
+    // NSLog(@"====Dealloc====");
 }
 
 /*
