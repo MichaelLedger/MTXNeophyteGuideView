@@ -53,9 +53,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) NSTimeInterval hideTime;
 
 /**
- 所有的图片是否在同一时间展示，默认为NO，即单击一次显示一张直到消失
+ 所有图片是否在同一时间展示，默认为NO，即单击一次显示一张直到消失
  */
 @property (nonatomic, assign) BOOL showAtOnce;
+
+/**
+ 所有图片是否取消自适应图片原始尺寸，默认为NO，即自适应图片大小
+ */
+@property (nonatomic, assign) BOOL disableAutoFitSize;
 
 /**
  每次单击回调，回调参数为单击次数
@@ -66,6 +71,7 @@ NS_ASSUME_NONNULL_BEGIN
  快速创建初始化新手引导视图
  
  @warning 图片和图片坐标必须一一对应
+ @warning 默认情况（disableAutoFitSize为NO）下自适应图片大小，坐标中图片的尺寸参数无效，即可设置为0
 
  @param opaqueImages 非透明图片数组
  @param opaqueRects 非透明图片坐标数组

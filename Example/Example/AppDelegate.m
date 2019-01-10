@@ -70,24 +70,26 @@
     NSArray <NSValue *> *opaqueRects = @[[NSValue valueWithCGRect:CGRectMake(50, 100, 300, 100)],[NSValue valueWithCGRect:CGRectMake(50, 360, 300, 150)],[NSValue valueWithCGRect:CGRectMake(50, [UIScreen mainScreen].bounds.size.height - 250, 200, 150)]];
     NSArray <UIImage *> *lucencyImages = @[[UIImage imageNamed:@"dashed_rect"],[UIImage imageNamed:@"dashed_rect"],[UIImage imageNamed:@"dashed_rect"]];
     NSArray <NSValue *> *lucencyRects = @[[NSValue valueWithCGRect:CGRectMake(20, 200, 100, 50)],[NSValue valueWithCGRect:CGRectMake(100, 260, 100, 100)],[NSValue valueWithCGRect:CGRectMake([UIScreen mainScreen].bounds.size.width / 2, [UIScreen mainScreen].bounds.size.height - 100, 100, 100)]];
-    //快速创建初始化新手引导视图
+    // 快速创建初始化新手引导视图
     MTXNeophyteGuideView *guideView = [[MTXNeophyteGuideView alloc] initWithOpaqueImages:opaqueImages opaqueRects:opaqueRects lucencyImages:lucencyImages lucencyRects:lucencyRects];
-    //每次单击回调，回调参数为单击次数
+    // 每次单击回调，回调参数为单击次数
     guideView.clickBlock = ^(NSInteger clickTimes) {
         AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
         UITabBarController *tab = (UITabBarController *)delegate.window.rootViewController;
         [tab setSelectedIndex:clickTimes < 4 ? clickTimes : 3];
     };
-    //所有的图片是否在同一时间展示，默认为NO，即单击一次显示一张直到消失
+    // 所有的图片是否在同一时间展示，默认为NO，即单击一次显示一张直到消失
     //guideView.showAtOnce = YES;
-    //所有图片圆角大小，默认为5
-    guideView.cornerRadius = 10.f;
-    //展示的渐变动画时长，默认为0.5
+    // 所有图片圆角大小，默认为5
+    //guideView.cornerRadius = 10.f;
+    // 展示的渐变动画时长，默认为0.5
     guideView.showTime = 1.f;
-    //隐藏的渐变动画时长，默认为0.5
+    // 隐藏的渐变动画时长，默认为0.5
     guideView.hideTime = .5f;
-    //引导视图的填充颜色，默认为[UIColor colorWithWhite:0 alpha:0.6]
+    // 引导视图的填充颜色，默认为[UIColor colorWithWhite:0 alpha:0.6]
     //guideView.fillColor = [UIColor colorWithRed:46/255.f green:152/255.f blue:152/255.f alpha:0.2];
+    // 所有图片是否取消自适应图片原始尺寸，默认为NO，即自适应图片大小
+    // guideView.disableAutoFitSize = YES;
     [guideView show];
 }
 

@@ -85,6 +85,10 @@
     if (!_showAtOnce) {
         if (_clickTimes < self.lucencyImages.count) {
             CGRect lucencyRect = [[self.lucencyRects objectAtIndex:_clickTimes] CGRectValue];
+            if (!_disableAutoFitSize) {
+                CGSize lucencyImgSize = [self.lucencyImages objectAtIndex:_clickTimes].size;
+                lucencyRect = CGRectMake(lucencyRect.origin.x, lucencyRect.origin.y, lucencyImgSize.width, lucencyImgSize.height);
+            }
             //缩小空白区域
             lucencyRect = CGRectMake(lucencyRect.origin.x + 1, lucencyRect.origin.y + 1, lucencyRect.size.width - 2, lucencyRect.size.height - 2);
             UIBezierPath *lucencyPath = [UIBezierPath bezierPathWithRoundedRect:lucencyRect cornerRadius:self.cornerRadius];
@@ -102,6 +106,10 @@
     } else {
         [self.lucencyRects enumerateObjectsUsingBlock:^(NSValue * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             CGRect lucencyRect = [obj CGRectValue];
+            if (!self->_disableAutoFitSize) {
+                CGSize lucencyImgSize = [self.lucencyImages objectAtIndex:idx].size;
+                lucencyRect = CGRectMake(lucencyRect.origin.x, lucencyRect.origin.y, lucencyImgSize.width, lucencyImgSize.height);
+            }
             //缩小空白区域
             lucencyRect = CGRectMake(lucencyRect.origin.x + 1, lucencyRect.origin.y + 1, lucencyRect.size.width - 2, lucencyRect.size.height - 2);
             UIBezierPath *lucencyPath = [UIBezierPath bezierPathWithRoundedRect:lucencyRect cornerRadius:self.cornerRadius];
@@ -120,7 +128,9 @@
 }
 
 - (void)addImageViewWithImage:(UIImage *)image Rect:(NSValue *)rect {
-    UIImageView *iv = [[UIImageView alloc] initWithFrame:[rect CGRectValue]];
+    CGRect imageFrame = [rect CGRectValue];
+    if (!_disableAutoFitSize) imageFrame = CGRectMake(imageFrame.origin.x, imageFrame.origin.y, image.size.width, image.size.height);
+    UIImageView *iv = [[UIImageView alloc] initWithFrame:imageFrame];
     iv.image = image;
     [self addSubview:iv];
 }
@@ -152,6 +162,11 @@
     [self refresh];
 }
 
+- (void)setDisableAutoFitSize:(BOOL)disableAutoFitSize {
+    _disableAutoFitSize = disableAutoFitSize;
+    [self refresh];
+}
+
 #pragma mark - Override
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     _clickTimes ++;
@@ -174,7 +189,7 @@
 
 #pragma mark - Dealloc
 - (void)dealloc {
-//    NSLog(@"====Dealloc====");
+    NSLog(@"====Dealloc====");
 }
 
 /*
