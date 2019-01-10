@@ -89,9 +89,9 @@
             lucencyRect = CGRectMake(lucencyRect.origin.x + 1, lucencyRect.origin.y + 1, lucencyRect.size.width - 2, lucencyRect.size.height - 2);
             UIBezierPath *lucencyPath = [UIBezierPath bezierPathWithRoundedRect:lucencyRect cornerRadius:self.cornerRadius];
             [overlayPath appendPath:lucencyPath];
-            
-            self.shapeLayer.path = overlayPath.CGPath;
         }
+        
+        self.shapeLayer.path = overlayPath.CGPath;
         
         if (_clickTimes < self.opaqueImages.count) {
             [self addImageViewWithImage:[self.opaqueImages objectAtIndex:_clickTimes] Rect:[self.opaqueRects objectAtIndex:_clickTimes]];
@@ -165,7 +165,7 @@
         return;
     }
     
-    if (_clickTimes >= self.opaqueImages.count) {
+    if (_clickTimes >= self.opaqueImages.count && _clickTimes >= self.lucencyImages.count) {
         [self hide];
     } else {
         [self refresh];
