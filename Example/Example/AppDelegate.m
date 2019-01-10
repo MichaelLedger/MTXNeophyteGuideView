@@ -79,13 +79,15 @@
         [tab setSelectedIndex:clickTimes < 4 ? clickTimes : 3];
     };
     //所有的图片是否在同一时间展示，默认为NO，即单击一次显示一张直到消失
-//    guideView.showAtOnce = YES;
+    //guideView.showAtOnce = YES;
     //所有图片圆角大小，默认为5
     guideView.cornerRadius = 10.f;
     //展示的渐变动画时长，默认为0.5
     guideView.showTime = 1.f;
     //隐藏的渐变动画时长，默认为0.5
     guideView.hideTime = .5f;
+    //引导视图的填充颜色，默认为[UIColor colorWithWhite:0 alpha:0.6]
+    //guideView.fillColor = [UIColor colorWithRed:46/255.f green:152/255.f blue:152/255.f alpha:0.2];
     [guideView show];
 }
 

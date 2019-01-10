@@ -1,6 +1,6 @@
 //
 //  MTXNeophyteGuideView.h
-//  Example
+//  新手引导视图
 //
 //  Created by MountainX on 2019/1/9.
 //  Copyright © 2019年 MTX Software Technology Co.,Ltd. All rights reserved.
@@ -66,7 +66,6 @@ NS_ASSUME_NONNULL_BEGIN
  快速创建初始化新手引导视图
  
  @warning 图片和图片坐标必须一一对应
- @warning 如果showAtOnce设置为NO，非透明图片和透明图片必须一一对应
 
  @param opaqueImages 非透明图片数组
  @param opaqueRects 非透明图片坐标数组

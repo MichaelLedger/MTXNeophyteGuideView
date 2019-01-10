@@ -1,6 +1,6 @@
 //
 //  MTXNeophyteGuideView.m
-//  Example
+//  新手引导视图
 //
 //  Created by MountainX on 2019/1/9.
 //  Copyright © 2019年 MTX Software Technology Co.,Ltd. All rights reserved.
@@ -63,40 +63,42 @@
 
 #pragma mark - Private Method
 - (void)setup {
-    NSAssert(self.opaqueImages.count == self.opaqueRects.count, @"opaqueImages.count must equal opaqueRects.count!");
-    NSAssert(self.lucencyImages.count == self.lucencyRects.count, @"lucencyImages.count must equal lucencyRects.count!");
-    if (!_showAtOnce) {
-        NSAssert(self.opaqueImages.count == self.lucencyImages.count, @"opaqueImages.count must equal lucencyImages.count!");
-    }
-    
     self.frame = [UIScreen mainScreen].bounds;
     self.backgroundColor = [UIColor clearColor];
     self.fillColor = [UIColor colorWithWhite:0 alpha:0.6];
     self.cornerRadius = 5.f;
     self.showTime = .5f;
     self.hideTime = .5f;
-    
     [self.layer addSublayer:self.shapeLayer];
     [self refresh];
 }
 
 - (void)refresh {
+    NSAssert(self.opaqueImages.count == self.opaqueRects.count, @"opaqueImages.count must equal opaqueRects.count!");
+    NSAssert(self.lucencyImages.count == self.lucencyRects.count, @"lucencyImages.count must equal lucencyRects.count!");
+    
     [self.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
     UIBezierPath *overlayPath = [UIBezierPath bezierPathWithRect:self.bounds];
     [overlayPath setUsesEvenOddFillRule:YES];
     
     if (!_showAtOnce) {
-        CGRect lucencyRect = [[self.lucencyRects objectAtIndex:_clickTimes] CGRectValue];
-        //缩小空白区域
-        lucencyRect = CGRectMake(lucencyRect.origin.x + 1, lucencyRect.origin.y + 1, lucencyRect.size.width - 2, lucencyRect.size.height - 2);
-        UIBezierPath *lucencyPath = [UIBezierPath bezierPathWithRoundedRect:lucencyRect cornerRadius:self.cornerRadius];
-        [overlayPath appendPath:lucencyPath];
+        if (_clickTimes < self.lucencyImages.count) {
+            CGRect lucencyRect = [[self.lucencyRects objectAtIndex:_clickTimes] CGRectValue];
+            //缩小空白区域
+            lucencyRect = CGRectMake(lucencyRect.origin.x + 1, lucencyRect.origin.y + 1, lucencyRect.size.width - 2, lucencyRect.size.height - 2);
+            UIBezierPath *lucencyPath = [UIBezierPath bezierPathWithRoundedRect:lucencyRect cornerRadius:self.cornerRadius];
+            [overlayPath appendPath:lucencyPath];
+            
+            self.shapeLayer.path = overlayPath.CGPath;
+        }
         
-        self.shapeLayer.path = overlayPath.CGPath;
-        
-        [self addImageViewWithImage:[self.opaqueImages objectAtIndex:_clickTimes] Rect:[self.opaqueRects objectAtIndex:_clickTimes]];
-        [self addImageViewWithImage:[self.lucencyImages objectAtIndex:_clickTimes] Rect:[self.lucencyRects objectAtIndex:_clickTimes]];
+        if (_clickTimes < self.opaqueImages.count) {
+            [self addImageViewWithImage:[self.opaqueImages objectAtIndex:_clickTimes] Rect:[self.opaqueRects objectAtIndex:_clickTimes]];
+        }
+        if (_clickTimes < self.lucencyImages.count) {
+            [self addImageViewWithImage:[self.lucencyImages objectAtIndex:_clickTimes] Rect:[self.lucencyRects objectAtIndex:_clickTimes]];
+        }
     } else {
         [self.lucencyRects enumerateObjectsUsingBlock:^(NSValue * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             CGRect lucencyRect = [obj CGRectValue];
@@ -137,6 +139,7 @@
 - (void)setFillColor:(UIColor *)fillColor {
     _fillColor = fillColor;
     self.shapeLayer.fillColor = _fillColor.CGColor;
+    [self refresh];
 }
 
 - (void)setShowAtOnce:(BOOL)showAtOnce {
