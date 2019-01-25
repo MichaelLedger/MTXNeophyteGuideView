@@ -43,16 +43,13 @@
     [[UIApplication sharedApplication].keyWindow bringSubviewToFront:self];
     
     self.alpha = 0.f;
-    self.userInteractionEnabled = NO;
     [UIView animateWithDuration:self.showTime animations:^{
         self.alpha = 1.f;
     } completion:^(BOOL finished) {
-        self.userInteractionEnabled = YES;
     }];
 }
 
 - (void)hide {
-    self.userInteractionEnabled = NO;
     self.alpha = 1.f;
     [UIView animateWithDuration:self.hideTime animations:^{
         self.alpha = 0.f;
